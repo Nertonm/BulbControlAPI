@@ -1,9 +1,4 @@
-from flask import Flask
-from lamp_control import app
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
+from services.lampada_service import app
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=8080)
