@@ -1,4 +1,4 @@
-from services.lampada_service import app
+import uvicorn
 
 if __name__ == '__main__':
-    app.run(debug=True, port=8080)
+    uvicorn.run("services.lampada_service:app", port=8080, reload=True)
