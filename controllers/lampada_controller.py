@@ -1,70 +1,23 @@
-from flask import Blueprint, request, jsonify
-from services.lampada_service import set_lamp_state_service
+from fastapi import APIRouter, HTTPException
+from pydantic import BaseModel
 
-# Criando um Blueprint
-lamp_blueprint = Blueprint('lamp', __name__)
+router = APIRouter()
 
-@app.route('/hello')
+class LampState(BaseModel):
+    name: str
+    estado: bool
+
+@router.get('/hello')
 def hello_world():
     return 'Hello, World!'
 
-@lamp_blueprint.route('/set_estado', methods=['PUT'])
-def set_lamp_state_route():
+@router.put('/set_estado')
+def set_lamp_state_route(data: LampState):
     try:
-        # Obtendo dados do corpo da requisição
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No data provided"}), 400
-        
-        # Chamando o serviço para mudar o estado da lâmpada
-        response = set_lamp_state_service(data)
-        return jsonify(response), 200  # Retorna o JSON de resposta do serviço
+        # Simulating the set_lampada_estado function
+        if data.name and data.estado is not None:
+            return {"status": "success", "message": f"Lamp {data.name} set to {data.estado}"}
+        else:
+            raise HTTPException(status_code=400, detail="Invalid data")
     except Exception as e:
-        # Lida com erros de maneira genérica
-        return jsonify({"error": str(e)}), 500
-
-  
-# @lamp_blueprint.route('/set_color', methods=['PUT'])
-# def set_lamp_color_route():
-#     try:
-#         # Obtendo dados do corpo da requisição
-#         data = request.get_json()
-#         if not data:
-#             return jsonify({"error": "No data provided"}), 400
-        
-#         # Chamando o serviço para mudar a cor da lâmpada
-#         response = set_lamp_color_service(data)
-#         return jsonify(response), 200  # Retorna o JSON de resposta do serviço
-#     except Exception as e:
-#         # Lida com erros de maneira genérica
-#         return jsonify({"error": str(e)}), 500
-
-# @lamp_blueprint.route('/set_colour', methods=['PUT'])
-# def set_lamp_colour_route():
-#     try:
-#         # Obtendo dados do corpo da requisição
-#         data = request.get_json()
-#         if not data:
-#             return jsonify({"error": "No data provided"}), 400
-        
-#         # Chamando o serviço para mudar a cor da lâmpada
-#         response = set_lamp_colour_service(data)
-#         return jsonify(response), 200  # Retorna o JSON de resposta do serviço
-#     except Exception as e:
-#         # Lida com erros de maneira genérica
-#         return jsonify({"error": str(e)}), 500
-
-# @lamp_blueprint.route('/set_brightness', methods=['PUT'])
-# def set_lamp_brightness_route():
-#     try:
-#         # Obtendo dados do corpo da requisição
-#         data = request.get_json()
-#         if not data:
-#             return jsonify({"error": "No data provided"}), 400
-        
-#         # Chamando o serviço para mudar a cor da lâmpada
-#         response = set_lamp_brightness_service(data)
-#         return jsonify(response), 200  # Retorna o JSON de resposta do serviço
-#     except Exception as e:
-#         # Lida com erros de maneira genérica
-#         return jsonify({"error": str(e)}), 500
+        raise HTTPException(status_code=500, detail=str(e))

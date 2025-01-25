@@ -13,7 +13,19 @@ class lampada_object:
         return (f"lamp_object(name={self.name}, device_id={self.lamp.id},"
                 f" ip={self.lamp.address}, version={self.lamp.version}, local_key={self.lamp.local_key})")
     
+class lampada_estado(BaseModel):
+    name: str = ""
+    state: bool = True
 
+class lampada_color_estado(lampada_estado):
+    red: int
+    green: int
+    blue: int
+
+class lampada_color(BaseModel):
+    red: int
+    green: int
+    blue: int
 
 def load_devices():
     lampadas = []
@@ -33,19 +45,7 @@ def load_devices():
     except Exception as e:
         print(f"An unexpected error occurred: {e}")
 
-class lampada_estado(BaseModel):
-    name: str = ""
-    state: bool = True
 
-class lampada_color_estado(lampada_estado):
-    red: int
-    green: int
-    blue: int
-
-class lampada_color(BaseModel):
-    red: int
-    green: int
-    blue: int
 
 
 
